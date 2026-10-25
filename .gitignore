@@ -1,0 +1,25 @@
+# .NET Build
+**/bin/
+**/obj/
+
+# IDE
+.vs/
+.vscode/*
+!.vscode/extensions.json
+
+# Rider
+.idea/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Secrets
+.env
+.env.*
+!.env.example
+appsettings.Local.json
+appsettings.Production.json
