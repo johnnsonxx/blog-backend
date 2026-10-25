@@ -1,6 +1,11 @@
 @blog_backend_HostAddress = http://localhost:5256
 
-GET {{blog_backend_HostAddress}}/weatherforecast/
+GET {{blog_backend_HostAddress}}/api/users/health
+Accept: application/json
+
+###
+
+GET {{blog_backend_HostAddress}}/api/blogs/health
 Accept: application/json
 
 ###
