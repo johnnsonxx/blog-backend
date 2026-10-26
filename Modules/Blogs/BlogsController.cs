@@ -47,4 +47,47 @@ public sealed class BlogsController(IBlogsService blogsService) : ControllerBase
 
         return Created($"/api/blogs/{blog.Slug}", blog);
     }
+
+    [Authorize]
+    [HttpDelete("{blogId:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteBlog(
+        Guid blogId,
+        CancellationToken cancellationToken)
+    {
+        var subject = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+
+        if (!Guid.TryParse(subject, out var requesterId))
+        {
+            return Unauthorized();
+        }
+
+        var result = await blogsService.DeleteBlogAsync(
+            blogId,
+            requesterId,
+            cancellationToken);
+
+        return result switch
+        {
+            DeleteBlogResult.Deleted => NoContent(),
+            DeleteBlogResult.NotFound => NotFound(new ProblemDetails
+            {
+                Status = StatusCodes.Status404NotFound,
+                Title = "Blog not found",
+                Detail = $"Blog '{blogId}' does not exist."
+            }),
+            DeleteBlogResult.Forbidden => StatusCode(
+                StatusCodes.Status403Forbidden,
+                new ProblemDetails
+                {
+                    Status = StatusCodes.Status403Forbidden,
+                    Title = "Forbidden",
+                    Detail = "Only the blog author can delete this blog."
+                }),
+            _ => StatusCode(StatusCodes.Status500InternalServerError)
+        };
+    }
 }

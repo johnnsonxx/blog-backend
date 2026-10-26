@@ -44,4 +44,25 @@ public sealed class BlogsService(IBlogRepository blogRepository) : IBlogsService
                 createdBlog.CreatedAt,
                 createdBlog.UpdatedAt);
     }
+
+    public async Task<DeleteBlogResult> DeleteBlogAsync(
+        Guid blogId,
+        Guid requesterId,
+        CancellationToken cancellationToken = default)
+    {
+        var blog = await blogRepository.FindBlogByIdAsync(blogId, cancellationToken);
+
+        if (blog is null)
+        {
+            return DeleteBlogResult.NotFound;
+        }
+
+        if (blog.AuthorId != requesterId)
+        {
+            return DeleteBlogResult.Forbidden;
+        }
+
+        var deleted = await blogRepository.DeleteBlogAsync(blogId, cancellationToken);
+        return deleted ? DeleteBlogResult.Deleted : DeleteBlogResult.NotFound;
+    }
 }

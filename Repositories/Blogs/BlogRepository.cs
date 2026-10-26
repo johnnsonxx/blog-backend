@@ -29,4 +29,24 @@ public sealed class BlogRepository(BlogDbContext dbContext) : IBlogRepository
             return null;
         }
     }
+
+    public Task<Blog?> FindBlogByIdAsync(
+        Guid blogId,
+        CancellationToken cancellationToken = default)
+    {
+        return dbContext.Blogs
+            .AsNoTracking()
+            .SingleOrDefaultAsync(blog => blog.Id == blogId, cancellationToken);
+    }
+
+    public async Task<bool> DeleteBlogAsync(
+        Guid blogId,
+        CancellationToken cancellationToken = default)
+    {
+        var deletedRows = await dbContext.Blogs
+            .Where(blog => blog.Id == blogId)
+            .ExecuteDeleteAsync(cancellationToken);
+
+        return deletedRows > 0;
+    }
 }

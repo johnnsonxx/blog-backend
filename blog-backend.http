@@ -58,6 +58,11 @@ Content-Type: application/json
 
 ###
 
+DELETE {{blog_backend_HostAddress}}/api/blogs/{{blog_id}}
+Authorization: Bearer {{access_token}}
+
+###
+
 GET {{blog_backend_HostAddress}}/api/blogs/health
 Accept: application/json
 

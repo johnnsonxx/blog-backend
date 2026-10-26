@@ -10,4 +10,9 @@ public interface IBlogsService
         Guid authorId,
         CreateBlogRequest request,
         CancellationToken cancellationToken = default);
+
+    Task<DeleteBlogResult> DeleteBlogAsync(
+        Guid blogId,
+        Guid requesterId,
+        CancellationToken cancellationToken = default);
 }
