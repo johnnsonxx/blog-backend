@@ -16,6 +16,24 @@ Content-Type: application/json
 
 ###
 
+POST {{blog_backend_HostAddress}}/api/users/login
+Content-Type: application/json
+
+{
+  "email": "johnson@example.com",
+  "password": "change-me-123"
+}
+
+###
+
+@access_token = paste_login_access_token_here
+
+GET {{blog_backend_HostAddress}}/api/users/me
+Authorization: Bearer {{access_token}}
+Accept: application/json
+
+###
+
 GET {{blog_backend_HostAddress}}/api/blogs/health
 Accept: application/json
 

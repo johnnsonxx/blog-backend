@@ -9,4 +9,8 @@ public interface IUsersService
     Task<UserResponse?> RegisterAsync(
         RegisterUserRequest request,
         CancellationToken cancellationToken = default);
+
+    Task<LoginResponse?> LoginAsync(
+        LoginUserRequest request,
+        CancellationToken cancellationToken = default);
 }

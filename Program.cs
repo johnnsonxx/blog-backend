@@ -12,8 +12,8 @@ builder.Services.AddOpenApi();
 
 // Keep module registration explicit so the composition root reads like NestJS imports.
 builder.Services
-    .AddSharedModule()
-    .AddCommonModule()
+    .AddSharedModule(builder.Configuration)
+    .AddCommonModule(builder.Configuration)
     .AddDatabaseModule(builder.Configuration)
     .AddRepositoriesModule()
     .AddUsersModule()
@@ -29,6 +29,7 @@ if (app.Environment.IsDevelopment())
 // Middleware
 app.UseHttpsRedirection();
 // Auth middleware
+app.UseAuthentication();
 app.UseAuthorization();
 // Map controllerså
 app.MapControllers();
