@@ -31,7 +31,7 @@ app.UseHttpsRedirection();
 // Auth middleware
 app.UseAuthentication();
 app.UseAuthorization();
-// Map controllerså
+// Map controllers
 app.MapControllers();
 
 app.Run();

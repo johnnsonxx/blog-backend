@@ -11,8 +11,8 @@ infrastructure code stays at the project root.
 - `Entities`: Shared business data types used by feature modules, repository contracts,
   and database implementations. Entities are plain C# types and do not require
   dependency-injection registration.
-- `Common`: Cross-cutting infrastructure such as guards, middleware, exceptions,
-  and request context.
+- `Common`: Cross-cutting infrastructure such as JWT authentication, permission
+  guards, middleware, exceptions, and request context.
 - `Shared`: Small stateless and infrastructure-independent helpers, such as token
   generation. Shared must not depend on feature modules or repositories.
 - `Database`: The EF Core `DbContext`, entity mappings, database configuration,

@@ -21,7 +21,7 @@ Content-Type: application/json
 
 {
   "email": "johnson@example.com",
-  "password": "change-me-123"
+  "password": "a123456A!"
 }
 
 ###
@@ -31,6 +31,18 @@ Content-Type: application/json
 GET {{blog_backend_HostAddress}}/api/users/me
 Authorization: Bearer {{access_token}}
 Accept: application/json
+
+###
+
+POST {{blog_backend_HostAddress}}/api/blogs
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "title": "My first blog post",
+  "slug": "my-first-blog-post",
+  "content": "This is my first blog post."
+}
 
 ###
 
