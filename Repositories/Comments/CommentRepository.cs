@@ -8,13 +8,34 @@ namespace blog_backend.Repositories.Comments;
 public sealed class CommentRepository(
     BlogDbContext dbContext) : ICommentRepository
 {
+    public Task<bool> BlogExistsAsync(
+        Guid blogId,
+        CancellationToken cancellationToken = default)
+    {
+        return dbContext.Blogs.AnyAsync(
+            blog => blog.Id == blogId,
+            cancellationToken);
+    }
+
+    public async Task<IReadOnlyList<Comment>> GetCommentsByBlogIdAsync(
+        Guid blogId,
+        CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Comments
+            .AsNoTracking()
+            .Include(comment => comment.Author)
+            .Where(comment =>
+                comment.BlogId == blogId && comment.Status == "visible")
+            .OrderBy(comment => comment.CreatedAt)
+            .ThenBy(comment => comment.Id)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<Comment?> CreateCommentAsync(
         Comment comment,
         CancellationToken cancellationToken = default)
     {
-        var blogExists = await dbContext.Blogs.AnyAsync(
-            blog => blog.Id == comment.BlogId,
-            cancellationToken);
+        var blogExists = await BlogExistsAsync(comment.BlogId, cancellationToken);
 
         if (!blogExists)
         {

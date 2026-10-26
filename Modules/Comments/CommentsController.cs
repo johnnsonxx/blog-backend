@@ -11,6 +11,31 @@ namespace blog_backend.Modules.Comments;
 public sealed class CommentsController(
     ICommentsService commentsService) : ControllerBase
 {
+    [HttpGet]
+    [ProducesResponseType<IReadOnlyList<CommentListItemResponse>>(
+        StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<IReadOnlyList<CommentListItemResponse>>> GetComments(
+        Guid blogId,
+        CancellationToken cancellationToken)
+    {
+        var comments = await commentsService.GetCommentsByBlogIdAsync(
+            blogId,
+            cancellationToken);
+
+        if (comments is null)
+        {
+            return NotFound(new ProblemDetails
+            {
+                Status = StatusCodes.Status404NotFound,
+                Title = "Blog not found",
+                Detail = "The requested blog does not exist."
+            });
+        }
+
+        return Ok(comments);
+    }
+
     [Authorize]
     [HttpPost]
     [ProducesResponseType<CommentResponse>(StatusCodes.Status201Created)]

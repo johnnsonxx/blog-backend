@@ -58,6 +58,11 @@ Content-Type: application/json
 
 @blog_id = paste_created_blog_id_here
 
+GET {{blog_backend_HostAddress}}/api/blogs/{{blog_id}}/comments
+Accept: application/json
+
+###
+
 POST {{blog_backend_HostAddress}}/api/blogs/{{blog_id}}/comments
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
