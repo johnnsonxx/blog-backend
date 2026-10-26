@@ -5,6 +5,17 @@ Accept: application/json
 
 ###
 
+POST {{blog_backend_HostAddress}}/api/users/register
+Content-Type: application/json
+
+{
+  "displayName": "Johnson",
+  "email": "johnson@example.com",
+  "password": "a123456A!"
+}
+
+###
+
 GET {{blog_backend_HostAddress}}/api/blogs/health
 Accept: application/json
 

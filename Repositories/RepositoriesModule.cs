@@ -1,10 +1,12 @@
+using blog_backend.Repositories.Users;
+
 namespace blog_backend.Repositories;
 
 public static class RepositoriesModule
 {
     public static IServiceCollection AddRepositoriesModule(this IServiceCollection services)
     {
-        // Bind repository interfaces after a database provider has been selected.
+        services.AddScoped<IUserRepository, UserRepository>();
         return services;
     }
 }

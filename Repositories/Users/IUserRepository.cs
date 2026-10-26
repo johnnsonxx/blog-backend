@@ -1,9 +1,10 @@
 using blog_backend.Entities;
-using blog_backend.Repositories.Abstractions;
 
 namespace blog_backend.Repositories.Users;
 
-public interface IUserRepository : IRepository<User, Guid>
+public interface IUserRepository
 {
     Task<User?> FindByEmailAsync(string email, CancellationToken cancellationToken = default);
+
+    Task<User?> CreateUserAsync(User user, CancellationToken cancellationToken = default);
 }
