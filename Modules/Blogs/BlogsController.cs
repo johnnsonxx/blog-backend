@@ -13,6 +13,38 @@ public sealed class BlogsController(IBlogsService blogsService) : ControllerBase
     [HttpGet("health")]
     public IActionResult Health() => Ok(blogsService.GetModuleStatus());
 
+    [HttpGet]
+    [ProducesResponseType<BlogListResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<BlogListResponse>> GetBlogs(
+        [FromQuery] GetBlogsQuery query,
+        CancellationToken cancellationToken)
+    {
+        return Ok(await blogsService.GetBlogsAsync(query, cancellationToken));
+    }
+
+    [HttpGet("{slug}")]
+    [ProducesResponseType<BlogResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<BlogResponse>> GetBlogBySlug(
+        string slug,
+        CancellationToken cancellationToken)
+    {
+        var blog = await blogsService.GetBlogBySlugAsync(slug, cancellationToken);
+
+        if (blog is null)
+        {
+            return NotFound(new ProblemDetails
+            {
+                Status = StatusCodes.Status404NotFound,
+                Title = "Blog not found",
+                Detail = $"Blog with slug '{slug}' does not exist."
+            });
+        }
+
+        return Ok(blog);
+    }
+
     [Authorize]
     [HttpPost]
     [ProducesResponseType<BlogResponse>(StatusCodes.Status201Created)]

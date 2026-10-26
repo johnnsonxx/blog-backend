@@ -7,6 +7,34 @@ namespace blog_backend.Repositories.Blogs;
 
 public sealed class BlogRepository(BlogDbContext dbContext) : IBlogRepository
 {
+    public async Task<IReadOnlyList<Blog>> GetBlogsAsync(
+        int skip,
+        int take,
+        CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Blogs
+            .AsNoTracking()
+            .OrderByDescending(blog => blog.CreatedAt)
+            .ThenByDescending(blog => blog.Id)
+            .Skip(skip)
+            .Take(take)
+            .ToListAsync(cancellationToken);
+    }
+
+    public Task<int> CountBlogsAsync(CancellationToken cancellationToken = default)
+    {
+        return dbContext.Blogs.CountAsync(cancellationToken);
+    }
+
+    public Task<Blog?> FindBlogBySlugAsync(
+        string slug,
+        CancellationToken cancellationToken = default)
+    {
+        return dbContext.Blogs
+            .AsNoTracking()
+            .SingleOrDefaultAsync(blog => blog.Slug == slug, cancellationToken);
+    }
+
     public async Task<Blog?> CreateBlogAsync(
         Blog blog,
         CancellationToken cancellationToken = default)

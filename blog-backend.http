@@ -1,5 +1,15 @@
 @blog_backend_HostAddress = http://localhost:5256
 
+GET {{blog_backend_HostAddress}}/api/blogs?page=1&pageSize=10
+Accept: application/json
+
+###
+
+GET {{blog_backend_HostAddress}}/api/blogs/my-first-blog-post
+Accept: application/json
+
+###
+
 GET {{blog_backend_HostAddress}}/api/users/health
 Accept: application/json
 

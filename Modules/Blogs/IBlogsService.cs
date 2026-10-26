@@ -6,6 +6,14 @@ public interface IBlogsService
 {
     object GetModuleStatus();
 
+    Task<BlogListResponse> GetBlogsAsync(
+        GetBlogsQuery query,
+        CancellationToken cancellationToken = default);
+
+    Task<BlogResponse?> GetBlogBySlugAsync(
+        string slug,
+        CancellationToken cancellationToken = default);
+
     Task<BlogResponse?> CreateBlogAsync(
         Guid authorId,
         CreateBlogRequest request,
