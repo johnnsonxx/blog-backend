@@ -8,6 +8,7 @@ infrastructure code stays at the project root.
 
 - `Modules/Users`: User controller, service, request/response DTOs, validators, and mapping.
 - `Modules/Blogs`: Blog controller, service, request/response DTOs, validators, and mapping.
+- `Modules/Comments`: Comment controller, service, request/response DTOs, validators, and mapping.
 - `Entities`: Shared business data types used by feature modules, repository contracts,
   and database implementations. Entities are plain C# types and do not require
   dependency-injection registration.

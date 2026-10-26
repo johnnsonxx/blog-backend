@@ -1,6 +1,7 @@
 using blog_backend.Common;
 using blog_backend.Database;
 using blog_backend.Modules.Blogs;
+using blog_backend.Modules.Comments;
 using blog_backend.Modules.Users;
 using blog_backend.Repositories;
 using blog_backend.Shared;
@@ -17,7 +18,8 @@ builder.Services
     .AddDatabaseModule(builder.Configuration)
     .AddRepositoriesModule()
     .AddUsersModule()
-    .AddBlogsModule();
+    .AddBlogsModule()
+    .AddCommentsModule();
 
 var app = builder.Build();
 
